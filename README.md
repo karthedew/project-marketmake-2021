@@ -1,8 +1,23 @@
-# project-marketmake-2021
-Project for ETHGlobal's MarketMake 2021
+# Tokenization Gifting
+Project for ETHGlobal's MarketMake 2021. 
+
+This project tokenizes gold assets that can be used within DeFi. To show the application of depositing an asset, the application stakes the funds and pays out the interest to Givith.io.
+
+ [1] A securities asset tokenization application that utilizes the asset value on the Aave protocol for use in other applicable Aave features.
+ [2] Apply the securities asset to interest bearing account and automatically donate interest to Giveth.io. 
 
 
-# Project Checklist
+# Project Checklist / ToDo
+
+[1] Asset Tokenization Smart Contract
+    [1.1] ERC20 Token Smart Contract, value pegged to gold.
+    [1.2] Connect ERC20 Token Smart Contract to Aave protocol, lending pool
+[2] Kovan TestNet
+    [2.1] Deploy smart contracts to Kovan (Infura.io)
+    [2.2] Link client to Koven
+[3] Gifting Methodology
+    [3.1] Connect client to interest baring account (Aave account / tokens) 
+    [3.2] Automatic transfers from Aave interest account to Givith.io
 
 
 
