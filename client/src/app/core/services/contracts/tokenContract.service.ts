@@ -1,7 +1,6 @@
 
 import { Inject, Injectable } from '@angular/core';
 import { Contract, ethers, providers } from 'ethers';
-import { AppSigner } from "../ethers/appsigner.service";
 
 // // --- THE CONTRACT DATA ---
 import * as ContractAddress from '../../../../contracts/contract-address.json';

@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { ethers, providers } from "ethers";
 import { TokenContract } from "./core/services/contracts/tokenContract.service";
 
+// --- Import Interfaces ---
+import { EtherWindow } from "./core/interfaces/window.interface"
+
 
 @Component({
   selector: 'app-root',
@@ -24,6 +27,32 @@ export class AppComponent {
 
     // See method below for description.
     this.getContractName();
+
+    // const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+    // let window: EtherWindow;
+    // console.log(window);
+    // const providerMetaMask = new ethers.providers.Web3Provider(window.ethereum);
+    // const signer = providerMetaMask.getSigner();
+
+    // console.log(providerMetaMask)
+
+    // const network = "metamask"
+    // const provider = ethers.getDefaultProvider(network, {
+    //   etherscan: YOUR_ETHERSCAN_API_KEY,
+    //   infura: YOUR_INFURA_PROJECT_ID,
+    //   // Or if using a project secret:
+    //   // infura: {
+    //   //   projectId: YOUR_INFURA_PROJECT_ID,
+    //   //   projectSecret: YOUR_INFURA_PROJECT_SECRET,
+    //   // },
+    //   alchemy: YOUR_ALCHEMY_API_KEY,
+    //   pocket: YOUR_POCKET_APPLICATION_KEY
+    //   // Or if using an application secret key:
+    //   // pocket: {
+    //   //   applicationId: ,
+    //   //   applicationSecretKey:
+    //   // }
+    // });
   }
 
 
