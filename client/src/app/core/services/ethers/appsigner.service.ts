@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@angular/core";
 import { Signer, utils, providers, Wallet } from "ethers";
 import { RpcProvider } from "./ethers.injectable";
+require("dotenv").config()
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +10,7 @@ export class AppSigner extends Signer {
 
     private wallet: Wallet;
 
-    private wallet_key: string = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
+    private wallet_key: string = process.env.PRIVATE_KEY;
 
     constructor(
         @Inject(RpcProvider) public rpcProvider: providers.JsonRpcProvider
