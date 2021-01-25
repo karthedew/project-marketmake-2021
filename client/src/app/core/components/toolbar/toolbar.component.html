@@ -1,11 +1,19 @@
-<ul ngbNav #nav="ngbNav" class="nav-tabs">
-    <li ngbNavItem>
-      <a ngbNavLink routerLink="/">Home</a>
-      <ng-template ngbNavContent>First content</ng-template>
-    </li>
-    <li ngbNavItem>
-      <a ngbNavLink routerLink="/aave">Aave</a>
-      <ng-template ngbNavContent>Second content</ng-template>
-    </li>
-  </ul>
-<div [ngbNavOutlet]="nav"></div>
+<mat-toolbar>
+  <!-- Navigation -->
+  <mat-nav-list dense class="mat-nav-horizontal" fxHide.xs>
+    <div>
+      <mat-list-item>
+        <a routerLink="/">Home</a>
+      </mat-list-item>
+      <mat-list-item>
+        <a routerLink="/aave">Aave</a>
+      </mat-list-item>
+    </div>
+    
+    <div>
+      <mat-list-item *ngIf="!isLoggedIn">
+        <a mat-raised-button (click)="login()" style="color: orange;">MetaMask Login</a>
+      </mat-list-item>
+    </div>
+  </mat-nav-list>
+</mat-toolbar>

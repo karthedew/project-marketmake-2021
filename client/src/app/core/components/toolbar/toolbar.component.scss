@@ -1,0 +1,36 @@
+// mat-toolbar {
+//     // top: 0;
+//     width: auto;
+//     // height: 15vh;
+//     display: flex;
+//     flex-wrap: nowrap;
+//     flex-direction: row;
+//     justify-content: flex-start;
+//     background-color: #1988d2;
+//     color: white;
+// }
+
+mat-toolbar .toolbar {
+    width: 100%;
+    padding-left: 22%;
+    padding-right: 22%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+mat-toolbar .mat-nav-horizontal {
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .mat-list-item {
+        display: inline-block;
+        height: auto;
+        width: auto;
+    }
+}

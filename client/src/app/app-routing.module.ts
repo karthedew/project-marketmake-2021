@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AaveComponent } from './core/pages/aave/aave.component';
-import { HomeComponent } from './core/pages/home/home.component';
+import { AaveComponent } from './pages/aave/aave.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
   {
