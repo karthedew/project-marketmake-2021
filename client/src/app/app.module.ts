@@ -1,12 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+// ANGULAR MATERIAL IMPORTS 
+import { MaterialModule } from "./modules/material.module";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
-import { AaveComponent } from './core/pages/aave/aave.component';
-import { HomeComponent } from './core/pages/home/home.component';
+import { AaveComponent } from './pages/aave/aave.component';
+import { HomeComponent } from './pages/home/home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,8 @@ import { HomeComponent } from './core/pages/home/home.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
