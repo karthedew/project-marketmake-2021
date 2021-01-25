@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ethers, providers } from "ethers";
 import { TokenContract } from "./core/services/contracts/tokenContract.service";
-
-// --- Import Interfaces ---
-import { EtherWindow } from "./core/interfaces/window.interface"
+import { MetaMaskProvider, RpcProvider } from './core/services/ethers/ethers.injectable';
+import { LoginService } from "./core/services/web3/web3-login.service";
 
 
 @Component({
@@ -11,12 +10,23 @@ import { EtherWindow } from "./core/interfaces/window.interface"
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'frontend';
+  isLoggedIn: boolean = false;
 
   contractName: string;
 
-  constructor(private contract: TokenContract) {
+  constructor(
+    private contract: TokenContract,
+    private loginService: LoginService,
+    @Inject(RpcProvider) rpcProvider: providers.JsonRpcProvider,
+    @Inject(MetaMaskProvider) metaMaskProvider: providers.Web3Provider
+  ) {
+    (window as any).ethereum.enable().then((result) => {
+      this.isLoggedIn = true;
+    }).catch(err => {
+      alert('Please login with MetaMask to use this application.')
+    })
 
     /**
      * This is an example of:
@@ -28,31 +38,10 @@ export class AppComponent {
     // See method below for description.
     this.getContractName();
 
-    // const provider = new ethers.providers.Web3Provider(web3.currentProvider);
-    // let window: EtherWindow;
-    // console.log(window);
-    // const providerMetaMask = new ethers.providers.Web3Provider(window.ethereum);
-    // const signer = providerMetaMask.getSigner();
+  }
 
-    // console.log(providerMetaMask)
-
-    // const network = "metamask"
-    // const provider = ethers.getDefaultProvider(network, {
-    //   etherscan: YOUR_ETHERSCAN_API_KEY,
-    //   infura: YOUR_INFURA_PROJECT_ID,
-    //   // Or if using a project secret:
-    //   // infura: {
-    //   //   projectId: YOUR_INFURA_PROJECT_ID,
-    //   //   projectSecret: YOUR_INFURA_PROJECT_SECRET,
-    //   // },
-    //   alchemy: YOUR_ALCHEMY_API_KEY,
-    //   pocket: YOUR_POCKET_APPLICATION_KEY
-    //   // Or if using an application secret key:
-    //   // pocket: {
-    //   //   applicationId: ,
-    //   //   applicationSecretKey:
-    //   // }
-    // });
+  ngOnInit(): void {
+    
   }
 
 
@@ -78,6 +67,10 @@ export class AppComponent {
     let contract_name = await cn.name();
 
     this.contractName = contract_name;
+
+  }
+
+  async loginMetaMask() {
 
   }
 
