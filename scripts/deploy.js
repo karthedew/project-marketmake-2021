@@ -1,6 +1,7 @@
 // This is a script for deploying your contracts. You can adapt it to deploy
 
 const { ethers } = require("hardhat");
+var fs = require('fs');
 
 // yours, or create new ones.
 async function main() {
@@ -22,6 +23,30 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
+  // =================================
+  // --- DEPLOY MULTIPLE CONTRACTS ---
+  // =================================
+
+  // TODO: Use this to automatically read a list of contracts from directory,
+  // rather than adding manually
+  const contracts_directory = __dirname + "/../contracts";
+
+  // Add your contract name to the list:
+  const contracts = ["PriceConsumerV3", "Lend"];
+
+  var i;
+  for (i=0; i < contracts.length; i++) {
+    console.log('Getting contract artifact')
+    var current_contract = await ethers.getContractFactory("PriceConsumerV3")
+    console.log("Deploying contract: " + contracts[i])
+    var current_contract = await current_contract.deploy()
+    await current_contract.deployed()
+
+    console.log(contracts[i] + " deployed to: ", current_contract.address)
+    ethPrice = await current_contract.getLatestPrice()
+    console.log("Price data for ETH: ", ethPrice.toString())
+  }
+
   // =============================
   // --- DEPLOY TOKEN CONTRACT ---
   // =============================
@@ -34,19 +59,6 @@ async function main() {
   // We also save the contract's artifacts and address in the frontend directory
   saveFrontendFiles(token);
 
-
-  // =================================================
-  // --- DEPLOY PriceConsumerV3 Chainlink CONTRACT ---
-  // =================================================
-  console.log('Getting artifacts together - some else')
-  const PriceConsumerV3 = await ethers.getContractFactory("PriceConsumerV3")
-  console.log("Deploying PriceConsumerV3")
-  const priceConsumerV3 = await PriceConsumerV3.deploy()
-  await priceConsumerV3.deployed()
-
-  console.log("priceConsumerV3 deployed to: ", priceConsumerV3.address)
-  ethPrice = await priceConsumerV3.getLatestPrice()
-  console.log("Price data for ETH: ", ethPrice.toString())
 }
 
 
