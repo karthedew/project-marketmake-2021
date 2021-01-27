@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ethers, providers } from "ethers";
+import { Contract, ethers, providers } from "ethers";
 import { TokenContract } from "./core/services/contracts/tokenContract.service";
 import { MetaMaskProvider, RpcProvider } from './core/services/ethers/ethers.injectable';
 import { LoginService } from "./core/services/web3/web3-login.service";
 import { ChainLinkContract } from "./core/services/contracts/chainlinkContract.services";
+
+import * as PriceConsumerJson from '../contracts/PriceConsumerV3.sol/PriceConsumerV3.json'
 
 
 @Component({
@@ -51,8 +53,20 @@ export class AppComponent implements OnInit {
 
     console.log("This is the chainlink contract provider: ", this.chainLinkContract.provider);
 
+    this.chainLinkContract.name()
+      .then(name => {
+        console.log('The ChainLink name is: ', name)
+      })
+      .catch(err => console.error('The chainlink name did not work', err))
+
+    let priceConsumerAddress = "0xCdd5083844Bed450fb7353e5606B85EFc790D03f";
+    var signer = metaMaskProvider.getSigner();
+    let contractWithSigner = new Contract(priceConsumerAddress, PriceConsumerJson.abi, signer)
+
     this.chainLinkContract.getLatestPrice()
-      .then(res => console.log('The latest price is: ', res))
+      .then(res => {
+        console.log('The latest price is: ', BigInt(res));
+      })
       .catch(err => {
         console.log('You got an error trying to call the getLatestPrice', err)
       })

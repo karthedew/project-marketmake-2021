@@ -20,8 +20,9 @@ export class ChainLinkContract extends Contract {
     constructor(
         @Inject(MetaMaskProvider) metaMaskProvider: providers.Web3Provider
     ) {
-        let priceConsumerAddress = "0xCdd5083844Bed450fb7353e5606B85EFc790D03f";
-        let signer = metaMaskProvider.getSigner()
+        // let priceConsumerAddress = "0xCdd5083844Bed450fb7353e5606B85EFc790D03f";
+        let priceConsumerAddress = "0xBE8189aaa2166081B76d166649aB1Efb2ca5D4a5";
+        let signer = metaMaskProvider.getSigner();
         super(priceConsumerAddress, PriceConsumerJson.abi, signer);
   }
 }
