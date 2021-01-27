@@ -68,7 +68,7 @@ npx hardhat run scripts/deploy.js --network localhost
 Finally, we can run the frontend with:
 
 ```sh
-cd frontend
+cd client
 npm install
 npm start
 ```
