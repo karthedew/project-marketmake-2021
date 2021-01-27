@@ -16,9 +16,7 @@ module.exports = {
     },
     kovan: {
       url: process.env.KOVAN_RPC_URL,
-      accounts: {
-        mnemonic: process.env.MNEMONIC
-      }
+      accounts: [process.env.KOVAN_PRIVATE_KEY]
     }
   },
   solidity: "0.7.3"

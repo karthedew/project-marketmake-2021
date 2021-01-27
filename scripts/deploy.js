@@ -25,7 +25,9 @@ async function main() {
   // =============================
   // --- DEPLOY TOKEN CONTRACT ---
   // =============================
+  console.log('Getting artifacts together for Token Contract');
   const Token = await ethers.getContractFactory("Token");
+  console.log('Deploying TokenContract')
   const token = await Token.deploy();
   await token.deployed();
 
@@ -45,8 +47,8 @@ async function main() {
   await priceConsumerV3.deployed()
 
   console.log("priceConsumerV3 deployed to: ", priceConsumerV3.address)
-  ethPrice = await priceConsumerV3.getLatestPrice()
-  console.log("Price data for ETH: ", ethPrice.toString())
+  // ethPrice = await priceConsumerV3.getLatestPrice()
+  // console.log("Price data for ETH: ", ethPrice.toString())
 }
 
 
