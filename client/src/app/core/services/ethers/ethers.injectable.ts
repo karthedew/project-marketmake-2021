@@ -1,25 +1,15 @@
 import { ElementSchemaRegistry } from "@angular/compiler";
 import { InjectionToken } from "@angular/core";
 import { ethers, getDefaultProvider, providers } from "ethers";
-// import detectEthereumProvider from "@metamask/detect-provider";
-import { EtherWindow } from "../../interfaces/window.interface";
 import Web3 from "web3";
-// import {  } from "module";
-
-/*
-
-*/
-
-// const CONTRACT_ADDRESS = 
-// var window: EtherWindow
 
 /**
  * This connects to the Localhost Provider
  */
-const RpcProvider = new InjectionToken<providers.JsonRpcProvider>('HardHat Ethereum RPC Provider', {
-    providedIn: 'root',
-    factory: () => new providers.JsonRpcProvider('http://localhost:8545')
-})
+// const RpcProvider = new InjectionToken<providers.JsonRpcProvider>('HardHat Ethereum RPC Provider', {
+//     providedIn: 'root',
+//     factory: () => new providers.JsonRpcProvider('http://localhost:8545')
+// })
 
 /**
  * This connects to the current MetaMask provider
@@ -48,4 +38,4 @@ const WEB3 = new InjectionToken<Web3>('web3', {
     }
 });
 
- export { RpcProvider, MetaMaskProvider }
+ export { MetaMaskProvider, WEB3 }

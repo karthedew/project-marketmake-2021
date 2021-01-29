@@ -1,19 +1,31 @@
+<!-- Toolbar -->
 <mat-toolbar>
-  <!-- Navigation -->
-  <mat-nav-list dense class="mat-nav-horizontal" fxHide.xs>
-    <div>
-      <mat-list-item>
-        <a routerLink="/">Home</a>
-      </mat-list-item>
-      <mat-list-item>
-        <a routerLink="/aave">Aave</a>
-      </mat-list-item>
+  <div class="toolbar">
+    <div *ngIf="(isHandset$ | async)">
+        <h2>
+            TAL
+        </h2>
     </div>
-    
-    <div>
-      <mat-list-item *ngIf="!isLoggedIn">
-        <a mat-raised-button (click)="login()" style="color: orange;">MetaMask Login</a>
-      </mat-list-item>
+
+    <!-- Navigation -->
+    <div *ngIf="(isHandset$ | async)">
+        <mat-list-item (click)="onToggleSidenav($event)">
+            <fa-icon [icon]="faEllipsisV" size="lg"></fa-icon>
+        </mat-list-item>
     </div>
-  </mat-nav-list>
+
+    <div *ngIf="!(isHandset$ | async)">
+        {{ providerName }}
+    </div>
+
+    <div *ngIf="!(isHandset$ | async) && isLoggedIn">
+        <a mat-raised-button (click)="loginMetaMask()" style="color: orange;">MetaMask Login</a>
+    </div>
+  </div>
+
+  <!-- <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+          <mat-icon>menu</mat-icon>
+      </button>
+  </div> -->
 </mat-toolbar>

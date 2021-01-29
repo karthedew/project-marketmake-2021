@@ -1,11 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Contract, ethers, providers } from "ethers";
 import { TokenContract } from "./core/services/contracts/tokenContract.service";
-import { MetaMaskProvider, RpcProvider } from './core/services/ethers/ethers.injectable';
+import { MetaMaskProvider } from './core/services/ethers/ethers.injectable';
 import { LoginService } from "./core/services/web3/web3-login.service";
 import { ChainLinkContract } from "./core/services/contracts/chainlinkContract.services";
+import { SidenavService } from "./core/services/sidenav/sidenav.service";
 
-import * as PriceConsumerJson from '../contracts/PriceConsumerV3.sol/PriceConsumerV3.json'
+import * as PriceConsumerJson from '../contracts/PriceConsumerV3.sol/PriceConsumerV3.json';
+import { SidenavComponent } from './core/components/sidenav/sidenav.component';
 
 
 @Component({
@@ -13,55 +15,36 @@ import * as PriceConsumerJson from '../contracts/PriceConsumerV3.sol/PriceConsum
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit, OnInit {
+
+  // --- CLASS VARIABLES ---
   title = 'frontend';
   isLoggedIn: boolean = false;
+  toggleActive: boolean = false;
+  toggleToolbar: boolean = false;
 
   contractName: string;
+
+  @ViewChild(SidenavComponent) public sidenavComponent: SidenavComponent
 
   constructor(
     private contract: TokenContract,
     private chainLinkContract: ChainLinkContract,
     private loginService: LoginService,
-    @Inject(RpcProvider) rpcProvider: providers.JsonRpcProvider,
+    private sideNavService: SidenavService,
     @Inject(MetaMaskProvider) metaMaskProvider: providers.Web3Provider
   ) {
-    (window as any).ethereum.enable().then((result) => {
-      this.isLoggedIn = true;
-    }).catch(err => {
-      alert('Please login with MetaMask to use this application.')
-    })
-
-    let provider = ethers.providers.getDefaultProvider('kovan');
-    let infuraProvider = new ethers.providers.InfuraProvider('kovan');
-    metaMaskProvider.getBlockNumber()
-      .then(result => {
-        console.log('The current block number: ', result);
-      });
-
-    metaMaskProvider.getCode('0xCdd5083844Bed450fb7353e5606B85EFc790D03f')
-      .then(result => {
-        console.log('The Contract Code: ', result);
-      })
 
     /**
      * Test ChainLink Contract
      */
-    // console.log('The ChainLink Contract Name: ', this.chainLinkContract.name);
-
-    console.log("The ChainLink Contract", this.chainLinkContract)
-
-    console.log("This is the chainlink contract provider: ", this.chainLinkContract.provider);
 
     this.chainLinkContract.name()
       .then(name => {
         console.log('The ChainLink name is: ', name)
+        this.contractName = name;
       })
       .catch(err => console.error('The chainlink name did not work', err))
-
-    let priceConsumerAddress = "0xCdd5083844Bed450fb7353e5606B85EFc790D03f";
-    var signer = metaMaskProvider.getSigner();
-    let contractWithSigner = new Contract(priceConsumerAddress, PriceConsumerJson.abi, signer)
 
     this.chainLinkContract.getLatestPrice()
       .then(res => {
@@ -87,34 +70,18 @@ export class AppComponent implements OnInit {
     
   }
 
-
-  /**
-  * getContractName: void
-  * 
-  *   This method is just and example of the quick and easy way to connect
-  *   the Angular frontend to the hardhat localhost.
-  */
-  async getContractName() {
-
-    // --- Local Imports ---
-    var contract = require('../contracts/Token.json')
-    var contract_address = require('../contracts/contract-address.json')
-
-    // --- Set the Ethers.js Provider ---
-    const provider = new providers.JsonRpcProvider('http://localhost:8545');
-
-    // --- Create a new Ethere.js Contract ---
-    let cn = new ethers.Contract(contract_address.Token, contract.abi, provider);
-
-    // --- Call the name() method from the Smart Contract ---
-    let contract_name = await cn.name();
-
-    this.contractName = contract_name;
-
+  ngAfterViewInit(): void {
+    this.sideNavService.setSideNav(this.sidenavComponent.sideNav);
   }
 
-  async loginMetaMask() {
+  clickMenu() {
+    this.toggleActive = !this.toggleActive;
+    this.sideNavService.toggle();
+  }
 
+  childEventClicked($event: Event) {
+    this.toggleActive = !this.toggleActive;
+    this.sideNavService.toggle();
   }
 
 }

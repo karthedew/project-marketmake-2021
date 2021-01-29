@@ -1,6 +1,5 @@
-<app-toolbar
-  [isLoggedIn]="isLoggedIn"></app-toolbar>
-<div>
-  {{contractName}}
-</div>
-<router-outlet></router-outlet>
+<app-sidenav>
+  <app-toolbar *ngIf="!toggleToolbar" (sidenavToggle)="childEventClicked($event)"></app-toolbar>
+  {{ contractName }}
+  <router-outlet></router-outlet>
+</app-sidenav>

@@ -1,0 +1,64 @@
+<mat-sidenav-container>
+    <mat-sidenav #sidenav role="navigation" opened="false"
+      [fixedInViewport]="true"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+        <!-- PLACE TO ADD SIDENAV CODE -->
+        <h1 style="display: flex; justify-content: center; color: #1988d2; margin: 15%;">
+            TAL
+        </h1>
+        <br>
+        <div style="padding-left: 7%; padding-right: 7%;">
+
+            <mat-nav-list>
+                <mat-list-item>
+                    <fa-icon [icon]="faHome" size='sm' style="color: orangered;"></fa-icon>
+                    <span style="width: 10%;"></span>
+                    <a routerLink="/" style="color:rgb(102, 102, 102);">Home</a>
+                </mat-list-item>
+                <mat-list-item>
+                    <fa-icon [icon]="faDesktop" size='sm' style="color: #1988d2;"></fa-icon>
+                    <span style="width: 10%;"></span>
+                    <a routerLink="/lending" style="color:rgb(102, 102, 102);">Lending</a>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <fa-icon [icon]="faDesktop" size='sm' style="color: #1988d2;"></fa-icon>
+                    <span style="width: 10%;"></span>
+                    <a routerLink="/donate" style="color:rgb(102, 102, 102);">Donate</a>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <fa-icon [icon]="faDesktop" size='sm' style="color: #1988d2;"></fa-icon>
+                    <span style="width: 10%;"></span>
+                    <a routerLink="/assets" style="color:rgb(102, 102, 102);">Assets</a>
+                </mat-list-item>
+
+                <mat-list-item>
+                    <fa-icon [icon]="faUser" size='sm' style="color: orchid;"></fa-icon>
+                    <span style="width: 10%;"></span>
+                    <a routerLink="/aave" style="color:rgb(102, 102, 102);">Aave</a>
+                </mat-list-item>
+                <!-- <mat-list-item>
+                    <a routerLink="/signup">SignUp</a>
+                </mat-list-item> -->
+                
+                
+            </mat-nav-list>
+    
+            <br>
+            <mat-divider style="border-top-color: lightgray; border-top-width: 1.2px;"></mat-divider>
+            
+            <mat-nav-list dense>
+                <h5 style="color: gray">DOCUMENTATION</h5>
+                <a mat-list-item style="color: gray;">Getting Started</a>
+                <a mat-list-item style="color: gray;">Components</a>
+            </mat-nav-list>
+        </div>   
+    </mat-sidenav>
+    
+    <mat-sidenav-content>
+        <ng-content></ng-content>
+    </mat-sidenav-content>
+</mat-sidenav-container>

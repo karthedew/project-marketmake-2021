@@ -5,7 +5,7 @@ import { Contract, ethers, providers } from 'ethers';
 // // --- THE CONTRACT DATA ---
 import * as ContractAddress from '../../../../contracts/contract-address.json';
 import * as ContractJson from '../../../../contracts/Token.json';
-import { RpcProvider } from '../ethers/ethers.injectable';
+import { MetaMaskProvider } from '../ethers/ethers.injectable';
 
 
 /**
@@ -19,7 +19,7 @@ import { RpcProvider } from '../ethers/ethers.injectable';
 export class TokenContract extends Contract {
 
   constructor(
-    @Inject(RpcProvider) rpcProvider: providers.JsonRpcProvider
+    @Inject(MetaMaskProvider) rpcProvider: providers.Web3Provider
   ) {
     let signer = rpcProvider.getSigner()
     super(ContractAddress.Token, ContractJson.abi, signer);
