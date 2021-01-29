@@ -1,64 +1,87 @@
-import { Component } from '@angular/core';
-import { ethers, providers } from "ethers";
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Contract, ethers, providers } from "ethers";
 import { TokenContract } from "./core/services/contracts/tokenContract.service";
-import { RpcProvider } from "./core/services/ethers/ethers.injectable";
-import * as Web3 from "web3"
+import { MetaMaskProvider } from './core/services/ethers/ethers.injectable';
+import { LoginService } from "./core/services/web3/web3-login.service";
+import { ChainLinkContract } from "./core/services/contracts/chainlinkContract.services";
+import { SidenavService } from "./core/services/sidenav/sidenav.service";
+
+import * as PriceConsumerJson from '../contracts/PriceConsumerV3.sol/PriceConsumerV3.json';
+import { SidenavComponent } from './core/components/sidenav/sidenav.component';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit, OnInit {
+
+  // --- CLASS VARIABLES ---
   title = 'frontend';
+  isLoggedIn: boolean = false;
+  toggleActive: boolean = false;
+  toggleToolbar: boolean = false;
 
   contractName: string;
 
-  constructor(private contract: TokenContract) {
+  @ViewChild(SidenavComponent) public sidenavComponent: SidenavComponent
 
+  constructor(
+    private contract: TokenContract,
+    private chainLinkContract: ChainLinkContract,
+    private loginService: LoginService,
+    private sideNavService: SidenavService,
+    @Inject(MetaMaskProvider) metaMaskProvider: providers.Web3Provider
+  ) {
+
+    /**
+     * Test ChainLink Contract
+     */
+
+    this.chainLinkContract.name()
+      .then(name => {
+        console.log('The ChainLink name is: ', name)
+        this.contractName = name;
+      })
+      .catch(err => console.error('The chainlink name did not work', err))
+
+    this.chainLinkContract.getLatestPrice()
+      .then(res => {
+        console.log('The latest price is: ', BigInt(res));
+      })
+      .catch(err => {
+        console.log('You got an error trying to call the getLatestPrice', err)
+      })
 
     /**
      * This is an example of:
      *   [1] calling a function from the smart contract using an Angular Injectable token and,
      *   [2] Making the smart contract accessible through an Angular class.
      */
-    this.contractName = this.contract.name();
+    // this.contractName = this.contract.name();
 
     // See method below for description.
-    this.onstart();
-    this.getContractName();
-    
+    // this.getContractName();
+
+  }
+
+  ngOnInit(): void {
     
   }
 
-  async onstart() {
-    await (window as any).ethereum.enable();
+  ngAfterViewInit(): void {
+    this.sideNavService.setSideNav(this.sidenavComponent.sideNav);
   }
-  /**
-  * getContractName: void
-  * 
-  *   This method is just and example of the quick and easy way to connect
-  *   the Angular frontend to the hardhat localhost.
-  */
-  async getContractName() {
 
-    //await (window as any).ethereum.enable();
-    // --- Local Imports ---
-    var contract = require('../contracts/Token.json')
-    var contract_address = require('../contracts/contract-address.json')
+  clickMenu() {
+    this.toggleActive = !this.toggleActive;
+    this.sideNavService.toggle();
+  }
 
-    // --- Set the Ethers.js Provider ---
-    const provider = new providers.JsonRpcProvider('http://localhost:8545');
-    //const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // --- Create a new Ethere.js Contract ---
-    let cn = new ethers.Contract(contract_address.Token, contract.abi, provider);
-
-    // --- Call the name() method from the Smart Contract ---
-    let contract_name = await cn.name();
-
-    this.contractName = contract_name;
-
+  childEventClicked($event: Event) {
+    this.toggleActive = !this.toggleActive;
+    this.sideNavService.toggle();
   }
 
 }

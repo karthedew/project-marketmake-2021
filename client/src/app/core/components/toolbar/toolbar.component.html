@@ -1,0 +1,31 @@
+<!-- Toolbar -->
+<mat-toolbar>
+  <div class="toolbar">
+    <div *ngIf="(isHandset$ | async)">
+        <h2>
+            TAL
+        </h2>
+    </div>
+
+    <!-- Navigation -->
+    <div *ngIf="(isHandset$ | async)">
+        <mat-list-item (click)="onToggleSidenav($event)">
+            <fa-icon [icon]="faEllipsisV" size="lg"></fa-icon>
+        </mat-list-item>
+    </div>
+
+    <div *ngIf="!(isHandset$ | async)">
+        {{ providerName }}
+    </div>
+
+    <div *ngIf="!(isHandset$ | async) && isLoggedIn">
+        <a mat-raised-button (click)="loginMetaMask()" style="color: orange;">MetaMask Login</a>
+    </div>
+  </div>
+
+  <!-- <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+          <mat-icon>menu</mat-icon>
+      </button>
+  </div> -->
+</mat-toolbar>

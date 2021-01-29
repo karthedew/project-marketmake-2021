@@ -3,8 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Contract, ethers, providers } from 'ethers';
 
 // // --- THE CONTRACT DATA ---
-import * as ContractAddress from '../../../../contracts/contract-address.json';
-import * as ContractJson from '../../../../contracts/Token.json';
+import * as PriceConsumerJson from '../../../../contracts/PriceConsumerV3.sol/PriceConsumerV3.json'
 import { MetaMaskProvider } from '../ethers/ethers.injectable';
 
 
@@ -16,12 +15,14 @@ import { MetaMaskProvider } from '../ethers/ethers.injectable';
  *          for connecting to and interacting with the smart contract.
  */
 @Injectable({ providedIn: 'root' })
-export class TokenContract extends Contract {
+export class ChainLinkContract extends Contract {
 
-  constructor(
-    @Inject(MetaMaskProvider) rpcProvider: providers.Web3Provider
-  ) {
-    let signer = rpcProvider.getSigner()
-    super(ContractAddress.Token, ContractJson.abi, signer);
+    constructor(
+        @Inject(MetaMaskProvider) metaMaskProvider: providers.Web3Provider
+    ) {
+        // let priceConsumerAddress = "0xCdd5083844Bed450fb7353e5606B85EFc790D03f";
+        let priceConsumerAddress = "0xBE8189aaa2166081B76d166649aB1Efb2ca5D4a5";
+        let signer = metaMaskProvider.getSigner();
+        super(priceConsumerAddress, PriceConsumerJson.abi, signer);
   }
 }

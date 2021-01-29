@@ -5,14 +5,15 @@ import "@chainlink/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol";
 contract PriceConsumerV3 {
 
     AggregatorV3Interface internal priceFeed;
+    string public name = "My PriceConsumerV3 Contract";
 
     /**
-     * Network: Mainnet
+     * Network: Kovan
      * Aggregator: ETH/USD
-     * Address: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
+     * Address: 0x9326BFA02ADD2366b30bacB125260Af641031331
      */
-    constructor() {
-        priceFeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
+    constructor() public {
+        priceFeed = AggregatorV3Interface(0x9326BFA02ADD2366b30bacB125260Af641031331);
     }
 
     /**
@@ -26,8 +27,6 @@ contract PriceConsumerV3 {
             uint timeStamp,
             uint80 answeredInRound
         ) = priceFeed.latestRoundData();
-        // If the round is not complete yet, timestamp is 0
-        require(timeStamp > 0, "Round not complete");
         return price;
     }
 }
