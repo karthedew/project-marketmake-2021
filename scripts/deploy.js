@@ -36,6 +36,17 @@ async function main() {
   // We also save the contract's artifacts and address in the frontend directory
   saveFrontendFiles(token);
 
+  // =============================
+  // --- DEPLOY LEND CONTRACT ---
+  // =============================
+
+  console.log('Getting artifacts together - some else')
+  const Lend = await ethers.getContractFactory("Lend")
+  console.log("Deploying Lend")
+  const lend = await Lend.deploy()
+  await lend.deployed()
+
+  console.log("Lend deployed to: ", lend.address)
 
   // =================================================
   // --- DEPLOY PriceConsumerV3 Chainlink CONTRACT ---
