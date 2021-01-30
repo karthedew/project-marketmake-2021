@@ -20,16 +20,15 @@ describe("Lend contract", function () {
             await expect(() => owner.sendTransaction({to: lendToken.address, value: 200}))
             .to.changeEtherBalance(lendToken, 200);
         });
-        it("Should attribute ETH balance to the correct account", async function () {
-            await lendToken.deposit(50, {value: 10});
-            let balance = await lendToken.balanceOf(owner.address);
-            expect(balance).to.equal(10);
+        it("Should have an aWETH balance of 0 for the contract", async function () {
+            await lendToken.deposit(50, {value: 1000});
+            let aWETHBalance = await lendToken.balanceOfaWETH(lendToken.address);
+            expect(aWETHBalance).to.equal(0);
         });
         it("Should have an ETH balance of 0 for the owner", async function () {
-            await lendToken.deposit({value: 10});
-            let balance = await lendToken.balancOf(owner.address);
+            await lendToken.deposit(50, {value: 10});
+            let balance = await lendToken.balanceOf(owner.address);
             expect(balance).to.equal(0);
         });
-
     });
 });
