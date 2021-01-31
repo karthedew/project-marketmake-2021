@@ -1,7 +1,11 @@
 import { resolve } from '@angular/compiler-cli/src/ngtsc/file_system';
-import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Inject, Injectable, OnInit } from '@angular/core';
+import { rejects } from 'assert';
+import { Resolver } from 'dns';
+import { providers } from 'ethers';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, catchError  } from 'rxjs/operators';
+import { MetaMaskProvider } from '../ethers/ethers.injectable';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +18,14 @@ export class MetamaskService {
   private userLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isLoggedIn = this.userLoggedIn.asObservable();
 
-  constructor() {
-    this.isLoggedIn.subscribe((res) => {
-      console.log('This is the loggin status: ', res)
-    })
-    
-    this.checkIsConnected();
+  // --- OBSERVABLES ---
+  constructor() { }
 
-    this.isLoggedIn.subscribe((res) => {
-      console.log('This is the loggin status 2: ', res)
-    })
+  public checkLoggedIn() {
+    // if( (window as any).ethereum.isConnected() ) {
+      
+    // }
+    this.updateLoggedIn(true)
   }
 
   public metaMaskLogin() {
@@ -44,13 +46,7 @@ export class MetamaskService {
   public updateLoggedIn(loggedin: boolean) {
     this.userLoggedIn.next(loggedin);
   }
-
-  public async checkIsConnected(): Promise<boolean> {
-    return this.ethereum.isConnected()
-  }
-
-
-
+  
 }
 
 

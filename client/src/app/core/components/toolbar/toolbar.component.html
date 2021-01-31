@@ -18,8 +18,17 @@
         {{ providerName }}
     </div>
 
-    <div *ngIf="!(isHandset$ | async) && isLoggedIn">
+    <div *ngIf="!(isHandset$ | async) && !loggedIn">
         <a mat-raised-button (click)="loginMetaMask()" style="color: orange;">MetaMask Login</a>
+    </div>
+
+    <div *ngIf="!(isHandset$ | async) && loggedIn">
+        <div class="toolbar-address" (click)="copyAddress()" [(ngModel)]="currentAddress">
+            <div [cdkCopyToClipboard]="currentAddress">
+                {{ addressEmitter$ | async }}
+            </div>
+            
+        </div>
     </div>
   </div>
 

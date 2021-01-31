@@ -3,6 +3,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 // ANGULAR MATERIAL IMPORTS 
 import { MaterialModule } from "./modules/material.module";
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +28,8 @@ import { SidenavComponent } from './core/components/sidenav/sidenav.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
