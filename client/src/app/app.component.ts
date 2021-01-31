@@ -71,7 +71,8 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.sideNavService.setSideNav(this.sidenavComponent.sideNav);
+    let res = (window as any).ethereum.isConnected()
+    console.log('The app.component.ts loggedin result: ', res);
   }
 
   clickMenu() {
