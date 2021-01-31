@@ -11,7 +11,8 @@ module.exports = {
   networks: {
     hardhat: {
       forking: {
-        url: process.env.ALCHEMY_MAINNET_RPC_URL
+        url: process.env.FORKING_URL,
+        blockNumber: 11395144
       }
     },
     // kovan: {
