@@ -2,11 +2,12 @@ import { Component, Inject, Input, OnInit, Output, EventEmitter, AfterViewInit }
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { MetaMaskProvider } from 'app/core/services/ethers/ethers.injectable';
 import { providers } from 'ethers';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MetamaskService } from "../../services/metamask/metamask.service";
 import { map, shareReplay } from 'rxjs/operators';
 import { logging } from 'protractor';
+import { connected } from 'process';
 
 
 interface ConnectInfo {
@@ -22,22 +23,30 @@ interface ConnectInfo {
 export class ToolbarComponent implements OnInit {
 
   // --- LOCAL VARIABLES ---
+  ethereum = (window as any).ethereum;
   toggleActive: boolean = false;
-  loggedIn: boolean;
+  loggedIn: boolean = false;
+  providerName: string;
+
+
+  currentAddress: string;
+  addressEmitter$ = new BehaviorSubject<string>('');
 
   // Font Awesome
   faEllipsisV = faEllipsisV;
 
   // Event Emitters
+  @Input() isLoggedIn: boolean;
   @Output() sidenavToggle = new EventEmitter<Event>();
 
-  // ----------------------------------------------------
-
-  ethereum = (window as any).ethereum;
-
-  @Input() isLoggedIn: boolean;
-
-  providerName: string;
+  // --- CLASS OBSERVABLES ---
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
+  
+  // isLoggedIn$: Observable<boolean> = this.metaMaskService
 
   constructor(
     private metaMaskService: MetamaskService,
@@ -47,50 +56,52 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
 
+    // --- GET ACCOUNTS ---
+    this.ethereum.request({method: 'eth_requestAccounts'})
+      .then(accounts => {
+        this.loggedIn = true
+        this.changeAddress(accounts[0]);
+      })
+      .catch(err => {
+        this.loggedIn = false
+      })
+
     // --- Observe the Ethereum Provider Changing ---
     this.ethereum.on('chainChanged', (_chainId) => window.location.reload());
-    let _isConnected = this.metaMaskService.checkIsConnected();
 
-    console.log(this.ethereum.isConnected())
-
-    this.metaMaskService.checkIsConnected().then((result) => {
-      this.isLoggedIn = result;
-      console.log('result is: ', result)
+    this.ethereum.on('accountsChanged', (accounts) => {
+      window.location.reload()
     })
-    // this.metaMaskService.checkIsConnected().then((result) => {
-    //   this.isLoggedIn = result;
-    // })
-
-    // --- SUBSCRIBE TO LOGIN ---
-    this.metaMaskService.isLoggedIn.subscribe(_loggedIn => {
-      this.loggedIn = _loggedIn;
-
-      console.log('IN THE TOOLBAR SUBSCRIBE IS LOGGED IN: ', _loggedIn)
-    });
-
+    
     // --- Get the Provider Name ---
     this.getChainId()
-
   }
+
+
+
+  // =======================================================
 
   loginMetaMask() {
     this.metaMaskService.metaMaskLogin();
+    if (this.ethereum.isConnected()) {
+      this.loggedIn = true;
+    } else {
+      this.loggedIn = false
+    }
+  }
+
+  changeAddress(address: string) {
+    this.currentAddress = address
+    this.addressEmitter$.next(address);
   }
 
   public onToggleSidenav(event: Event) {
     this.sidenavToggle.emit(event);
   }
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
-
-  // public logout() {
-  //   this.authService.logout();
-  //   location.reload();
-  // }
+  public copyAddress() {
+    alert('Copied to Clipboard')
+  }
 
 
   private getChainId() {
