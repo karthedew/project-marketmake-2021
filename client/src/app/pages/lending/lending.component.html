@@ -25,9 +25,14 @@
                 <br>
 
                 <!-- Percentage to Gift -->
-                <mat-form-field>
-                    <input matInput placeholder="percent to donate" formControlName="percent">
-                </mat-form-field>
+                <div>
+                    <h4>Donation Amount (%)</h4>
+                    <mat-slider thumbLabel
+                                [displayWith]="formatLabel" 
+                                formControlName="percent" 
+                                min="0" max="100" step="1" value="50"></mat-slider>
+                </div>
+
             </form>
             <button mat-raised-button [disabled]="lendingForm.invalid" (click)="deposit()">Deposit Funds</button>
         </mat-card-content>

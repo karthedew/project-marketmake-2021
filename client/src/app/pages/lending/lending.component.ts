@@ -45,8 +45,6 @@ export class LendingComponent implements OnInit {
       ]]
     })
 
-    this.lendingForm.valueChanges.subscribe(console.log);
-
     this.lendingContract.deposit()
       .then(comeback => {
         this.comeback = comeback;
@@ -65,6 +63,10 @@ export class LendingComponent implements OnInit {
     // Call the Lending Contract Deposit function.
     this.lendingContract.deposit();
 
+  }
+
+  formatLabel(value: number) {
+    return value + '%';
   }
 
 }
