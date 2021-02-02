@@ -36,6 +36,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTreeModule } from "@angular/material/tree";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     exports: [
@@ -74,7 +75,8 @@ import { ReactiveFormsModule } from "@angular/forms";
         MatToolbarModule,
         MatTreeModule,
         MatFormFieldModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormsModule
     ]
 })
 export class MaterialModule {}
