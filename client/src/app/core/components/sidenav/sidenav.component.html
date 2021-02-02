@@ -5,10 +5,10 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
         <!-- PLACE TO ADD SIDENAV CODE -->
-        <h1 style="display: flex; justify-content: center; color: #1988d2; margin: 15%;">
-            TAL
-        </h1>
-        <br>
+        <div style="display: flex; justify-content: center; color: #1988d2;">
+            <img src="../../../../assets/archive/TAD_logo4.svg" alt="Kiwi standing on oval" width="150">
+        </div>
+
         <div style="padding-left: 7%; padding-right: 7%;">
 
             <mat-nav-list>
@@ -24,7 +24,7 @@
                 </mat-list-item>
 
                 <mat-list-item>
-                    <fa-icon [icon]="faDesktop" size='sm' style="color: #1988d2;"></fa-icon>
+                    <fa-icon [icon]="faDonate" size='sm' style="color: #1988d2;"></fa-icon>
                     <span style="width: 10%;"></span>
                     <a routerLink="/donate" style="color:rgb(102, 102, 102);">Donate</a>
                 </mat-list-item>

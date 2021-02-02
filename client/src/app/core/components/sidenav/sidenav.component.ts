@@ -6,7 +6,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { SidenavService } from "../../services/sidenav/sidenav.service";
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router, UrlSegment } from '@angular/router';
 // --- FORT AWESOME ---
-import { faDesktop, faUser, faHome } from "@fortawesome/free-solid-svg-icons";
+import { faDesktop, faUser, faHome, faDonate } from "@fortawesome/free-solid-svg-icons";
 
 
 @Component({
@@ -25,6 +25,7 @@ export class SidenavComponent implements OnInit {
   faDesktop = faDesktop;
   faUser = faUser;
   faHome = faHome;
+  faDonate = faDonate;
 
   @ViewChild('sidenav') public sideNav: MatSidenav;
 

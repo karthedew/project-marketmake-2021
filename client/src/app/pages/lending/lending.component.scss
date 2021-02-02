@@ -1,0 +1,10 @@
+.lending-card {
+    display: flex;
+    justify-content: center;
+
+    mat-card {
+        margin: 30px;
+        width: 60%;
+        background-color: rgb(56, 125, 255);
+    }
+}

@@ -6,10 +6,10 @@ import Web3 from "web3";
 /**
  * This connects to the Localhost Provider
  */
-// const RpcProvider = new InjectionToken<providers.JsonRpcProvider>('HardHat Ethereum RPC Provider', {
-//     providedIn: 'root',
-//     factory: () => new providers.JsonRpcProvider('http://localhost:8545')
-// })
+const RpcProvider = new InjectionToken<providers.JsonRpcProvider>('HardHat Ethereum RPC Provider', {
+    providedIn: 'root',
+    factory: () => new providers.JsonRpcProvider('http://localhost:8545')
+})
 
 /**
  * This connects to the current MetaMask provider
@@ -38,4 +38,4 @@ const WEB3 = new InjectionToken<Web3>('web3', {
     }
 });
 
- export { MetaMaskProvider, WEB3 }
+ export { MetaMaskProvider, WEB3, RpcProvider }

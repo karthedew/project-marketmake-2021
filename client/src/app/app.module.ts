@@ -14,6 +14,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SidenavComponent } from './core/components/sidenav/sidenav.component';
+import { LendingComponent } from './pages/lending/lending.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SidenavComponent } from './core/components/sidenav/sidenav.component';
     ToolbarComponent,
     AaveComponent,
     HomeComponent,
-    SidenavComponent
+    SidenavComponent,
+    LendingComponent
   ],
   imports: [
     BrowserModule,

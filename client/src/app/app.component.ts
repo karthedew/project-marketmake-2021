@@ -3,7 +3,7 @@ import { Contract, ethers, providers } from "ethers";
 import { TokenContract } from "./core/services/contracts/tokenContract.service";
 import { MetaMaskProvider } from './core/services/ethers/ethers.injectable';
 import { LoginService } from "./core/services/web3/web3-login.service";
-import { ChainLinkContract } from "./core/services/contracts/chainlinkContract.services";
+import { ChainLinkContract } from "./core/services/contracts/chainlinkContract.service";
 import { SidenavService } from "./core/services/sidenav/sidenav.service";
 
 import * as PriceConsumerJson from '../contracts/PriceConsumerV3.sol/PriceConsumerV3.json';
@@ -15,7 +15,7 @@ import { SidenavComponent } from './core/components/sidenav/sidenav.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit, OnInit {
+export class AppComponent implements OnInit {
 
   // --- CLASS VARIABLES ---
   title = 'frontend';
@@ -41,14 +41,12 @@ export class AppComponent implements AfterViewInit, OnInit {
 
     this.chainLinkContract.name()
       .then(name => {
-        console.log('The ChainLink name is: ', name)
         this.contractName = name;
       })
       .catch(err => console.error('The chainlink name did not work', err))
 
     this.chainLinkContract.getLatestPrice()
       .then(res => {
-        console.log('The latest price is: ', BigInt(res));
       })
       .catch(err => {
         console.log('You got an error trying to call the getLatestPrice', err)
@@ -68,11 +66,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     
-  }
-
-  ngAfterViewInit(): void {
-    let res = (window as any).ethereum.isConnected()
-    console.log('The app.component.ts loggedin result: ', res);
   }
 
   clickMenu() {
