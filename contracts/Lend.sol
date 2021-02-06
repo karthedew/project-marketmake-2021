@@ -13,6 +13,23 @@ contract Lend {
     address depositor;
     uint amount;
     uint total_deposited;
+    uint total_contract_balance;
+    uint total_given;
+
+    address deployer;
+    uint lastATokenBalance;
+    address[] userIndex;
+    struct UserStruct {
+        uint totalDeposited;
+        uint aTokenBalance;
+        uint givePercent;
+        uint savedInterest;
+        uint index;
+    }
+    mapping(address => UserStruct) userStructs;
+    address payable giveAddress = 0x8f951903c9360345b4e1b536c7f5ae8f88a64e79;
+
+    mapping(address => uint) internal total_interest;
     mapping(address => uint) internal balances;
     mapping(address => uint) internal giving_rates;
     mapping(address => uint) internal pool_percentage;
@@ -38,71 +55,98 @@ contract Lend {
     IAToken aTWETH = IAToken(0x030bA81f1c18d280636F32af80b9AAd02Cf0854e);
 
     constructor() {
-
+        deployer = msg.sender;
     }
 
     //function to receive ETH and record the balance for the address
     //in the balances mapping, and record the percentage of interest going to giveth
     function deposit(uint _interest) external payable {
-        balances[msg.sender] += msg.value;
-        giving_rates[msg.sender] = _interest; // what if payload for percent_interest is empty?
-        deposit_aave(msg.sender, msg.value);
+        scaleBalances();
+        bool _exists = checkUserExistence(msg.sender);
+        if (_exists == false) {
+            userIndex.push(msg.sender);
+        }
+        userStructs[msg.sender].totalDeposited += userStructs[msg.sender].total_deposited;
+        userStructs[msg.sender].givePercent = _interest;
+        userStructs[msg.sender].index = userIndex.push(msg.sender)-1;
+
+        depositAave(msg.sender, msg.value);
     }
 
-    //function to take ETH and deposit it into the AAVE lending protocol
-    function deposit_aave(address _spender, uint _amount) internal {
-        require(balances[_spender] >= _amount, "Balance not sufficient for transaction.");
-        total_deposited += _amount;
-        gateway.depositETH{value: balances[_spender]}(address(this), 0);
-        track_liquidity(_spender);
-        //aWETH.approve(address(pool), _amount); 
-        //pool.deposit(address(aWETH), _amount, address(this), 0);
-        balances[_spender] = balances[_spender] - _amount;
-    }
-
-    //function to track interest for depositors, using the liquidity index
-    function track_liquidity(address _spender) internal {
-        uint256 scaled_balance = aTWETH.scaledBalanceOf(address(this));
-        //These divisions will not work as return number will not be uint,
-        //but floating point, need another way around this
-        uint256 liquidity_index = total_deposited/scaled_balance;
-        if (liquidity_indices[_spender] == 0) {
-            liquidity_indices[_spender] = liquidity_index;
+    // Check if a user exists
+    function checkUserExistence(address _userAddress) internal returns(bool) {
+        uint _index = userStructs[_userAddress].index;
+        address _indexed_address = userIndex[_index];
+        if (_userAddress == _indexed_address) {
+            return true;
         } else {
-            //work out weighted liquidity index and store
+            return false;
         }
     }
 
-    //function to work out what the depositor wants to withdraw
-    //and withdraw ETH to the their address
-    function withdraw(address _beneficiary, uint _amount, bool _all) external {
-        require(balances[_beneficiary] >= _amount, "Trying to withdraw more than amount in account.");
-        if (_all == true) {
-            gateway.withdrawETH(uint(-1), _beneficiary);
-        } else if (_all == false) {
-            gateway.withdrawETH(_amount, _beneficiary);
+    // Take ETH and deposit it into the AAVE lending protocol
+    function depositAave(address _spender, uint _amount) internal {
+        gateway.depositETH{value: _amount}(address(this), 0);
+        userStructs[msg.sender].aTokenBalance += userStructs[msg.sender].aTokenBalance + _amount;
+        lastATokenBalance = aWETH.balanceOf(address(this));
+    }
+
+    function scaleBalances() private {
+        uint _aTokenBalance = aWETH.balanceOf(address(this));
+        uint scalingFactor = (_aTokenBalance * (10 ** 2))/lastATokenBalance;
+        for (uint i=0; i < userIndex.length; i++) {
+            userStructs[userIndex[0]].aTokenBalance = userStructs[userIndex[0]].aTokenBalance * scalingFactor;
         }
+    }
+
+    // Withdraw ETH to the beneficiary's address
+    function withdraw(uint _amount, bool _all) external {
+        scaleBalances();
+        require(userStructs[msg.sender].aTokenBalance >= _amount, "Trying to withdraw more than amount in account.");
+        if (_all == true) {
+            gateway.withdrawETH(uint(-1), msg.sender);
+            deleteUser(msg.sender);
+        } else if (_all == false) {
+            gateway.withdrawETH(_amount, msg.sender);
+        }
+    }
+
+    // Remove a user from userIndex and reorder
+    function deleteUser(address _user) {
+        uint index = userStructs[_user].index;
+        address structToMove = userIndex[userIndex.length-1];
+        userIndex[index] = structToMove;
+        userStructs[structToMove].index = index;
+        delete userIndex[userIndex.length-1];
     }
 
     //function work out the interest earned by each depositor for giving
     //at any point in time
     function interest_earned() internal {
 
-    }
+    }   
 
     //function to send a percentage to giveth
     function give() internal {
-
+        scaleBalances();
+        
     }
 
-    //function to adjust give percentage
-    function adjust_giving_rate(uint _percent_interest) external {
-        giving_rates[msg.sender] = _percent_interest;
+    // Adjust the user's give percentage
+    function adjust_giving_rate(uint _percentInterest) external {
+        require(checkUserExistence(msg.sender), "You must be a depositor to adjust your give percentage.");
+        userStructs[msg.sender].givePercent = _percentInterest;
     }
 
-    //function to read a user balance from the contract
+    // Read a user balance from the contract
     function balanceOf(address _account) external view returns (uint) {
-        return balances[_account];
+        return userStructs[_account].aTokenBalance;
+    }
+
+    // Update the give address
+    function updateGiveAddress(address payable _giveAddress) {
+        require(msg.sender == deployer, "You do not have permission to update the giving address.");
+        giveAddress = _giveAddress;
     }
 
 }
