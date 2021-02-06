@@ -43,7 +43,7 @@ async function main() {
   console.log('Getting artifacts together - some else')
   const Lend = await ethers.getContractFactory("Lend")
   console.log("Deploying Lend")
-  const lend = await Lend.deploy()
+  const lend = await Lend.deploy("0x8f951903c9360345b4e1b536c7f5ae8f88a64e79")
   await lend.deployed()
 
   console.log("Lend deployed to: ", lend.address)
