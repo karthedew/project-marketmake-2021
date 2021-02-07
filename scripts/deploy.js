@@ -48,6 +48,9 @@ async function main() {
 
   console.log("Lend deployed to: ", lend.address)
 
+  // We also save the contract's artifacts and address in the frontend directory
+  saveFrontendFilesLend(lend);
+
   // =================================================
   // --- DEPLOY PriceConsumerV3 Chainlink CONTRACT ---
   // =================================================
@@ -60,8 +63,35 @@ async function main() {
   console.log("priceConsumerV3 deployed to: ", priceConsumerV3.address)
   // ethPrice = await priceConsumerV3.getLatestPrice()
   // console.log("Price data for ETH: ", ethPrice.toString())
+
+   // We also save the contract's artifacts and address in the frontend directory
+   saveFrontendFilesPCV3(priceConsumerV3);
 }
 
+/**
+ * 
+ * @param {Contract} lend 
+ */
+function saveFrontendFilesLend(lend) {
+  const fs = require("fs");
+  const contractsDir = __dirname + "/../client/src/contracts";
+
+  if (!fs.existsSync(contractsDir)) {
+    fs.mkdirSync(contractsDir);
+  }
+
+  fs.writeFileSync(
+    contractsDir + "/lend-contract-address.json",
+    JSON.stringify({ Lend: lend.address }, undefined, 2)
+  );
+
+  const LendArtifact = artifacts.readArtifactSync("Lend");
+
+  fs.writeFileSync(
+    contractsDir + "/Lend.json",
+    JSON.stringify(LendArtifact, null, 2)
+  );
+}
 
 /**
  * 
@@ -85,6 +115,31 @@ function saveFrontendFiles(token) {
   fs.writeFileSync(
     contractsDir + "/Token.json",
     JSON.stringify(TokenArtifact, null, 2)
+  );
+}
+
+/**
+ * 
+ * @param {Contract} priceConsumerV3 
+ */
+function saveFrontendFilesPCV3(priceConsumerV3) {
+  const fs = require("fs");
+  const contractsDir = __dirname + "/../client/src/contracts";
+
+  if (!fs.existsSync(contractsDir)) {
+    fs.mkdirSync(contractsDir);
+  }
+
+  fs.writeFileSync(
+    contractsDir + "/pcv3-contract-address.json",
+    JSON.stringify({ PriceConsumerV3: priceConsumerV3.address }, undefined, 2)
+  );
+
+  const PriceConsumerV3Artifact = artifacts.readArtifactSync("PriceConsumerV3");
+
+  fs.writeFileSync(
+    contractsDir + "/PriceConsumerV3.json",
+    JSON.stringify(PriceConsumerV3Artifact, null, 2)
   );
 }
 

@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Contract, ethers, providers } from 'ethers';
 
 // // --- THE CONTRACT DATA ---
-import * as ContractJson from '../../../../../contracts/Lend.sol/Lend.json';
+import * as ContractJson from '../../../../../contracts/Lend.json';
 import { MetaMaskProvider, RpcProvider } from '../../ethers/ethers.injectable';
 
 

@@ -6,7 +6,7 @@ import { LoginService } from "./core/services/web3/web3-login.service";
 import { ChainLinkContract } from "./core/services/contracts/chainlinkContract.service";
 import { SidenavService } from "./core/services/sidenav/sidenav.service";
 
-import * as PriceConsumerJson from '../contracts/PriceConsumerV3.sol/PriceConsumerV3.json';
+import * as PriceConsumerJson from '../contracts/PriceConsumerV3.json';
 import { SidenavComponent } from './core/components/sidenav/sidenav.component';
 
 
