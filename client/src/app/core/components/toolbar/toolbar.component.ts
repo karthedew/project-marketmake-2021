@@ -30,7 +30,7 @@ export class ToolbarComponent implements OnInit {
 
 
   currentAddress: string;
-  addressEmitter$ = new BehaviorSubject<string>('');
+  // addressEmitter$ = new BehaviorSubject<string>('');
 
   // Font Awesome
   faEllipsisV = faEllipsisV;
@@ -59,7 +59,7 @@ export class ToolbarComponent implements OnInit {
     // --- GET ACCOUNTS ---
     this.ethereum.request({method: 'eth_requestAccounts'})
       .then(accounts => {
-        this.loggedIn = true
+        this.loggedIn = true;
         this.changeAddress(accounts[0]);
       })
       .catch(err => {
@@ -91,8 +91,8 @@ export class ToolbarComponent implements OnInit {
   }
 
   changeAddress(address: string) {
-    this.currentAddress = address
-    this.addressEmitter$.next(address);
+    this.currentAddress = address;
+    // this.addressEmitter$.next(address);
   }
 
   public onToggleSidenav(event: Event) {

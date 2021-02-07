@@ -3,7 +3,7 @@
   <div class="toolbar">
     <div *ngIf="(isHandset$ | async)">
         <h2>
-            TAL
+            TAD
         </h2>
     </div>
 
@@ -25,7 +25,7 @@
     <div *ngIf="!(isHandset$ | async) && loggedIn">
         <div class="toolbar-address" (click)="copyAddress()" [(ngModel)]="currentAddress">
             <div [cdkCopyToClipboard]="currentAddress">
-                {{ addressEmitter$ | async }}
+                {{ currentAddress }}
             </div>
             
         </div>

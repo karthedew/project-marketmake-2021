@@ -1,0 +1,40 @@
+<div class="lending-card">
+    <mat-card>
+        <mat-card-title>Lending</mat-card-title>
+        <mat-card-content>
+            <!-- START OF THE FORM -->
+            <form [formGroup]="lendingForm">
+                Value: {{ lendingForm.value | json }}
+            
+                <hr>
+
+                <!-- Token / Crypto to Deposit -->
+                <mat-form-field>
+                    <mat-select formControlName="token">
+                        <mat-option *ngFor="let crypto of cyrptoList" [value]="crypto">
+                            {{ crypto }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <br>
+
+                <!-- Amount to Deposit -->
+                <mat-form-field>
+                    <input matInput placeholder="amount to send" formControlName="amount">
+                </mat-form-field>
+                <br>
+
+                <!-- Percentage to Gift -->
+                <div>
+                    <h4>Donation Amount (%)</h4>
+                    <mat-slider thumbLabel
+                                [displayWith]="formatLabel" 
+                                formControlName="percent" 
+                                min="0" max="100" step="1" value="50"></mat-slider>
+                </div>
+
+            </form>
+            <button mat-raised-button [disabled]="lendingForm.invalid" (click)="deposit()">Deposit Funds</button>
+        </mat-card-content>
+    </mat-card>
+</div>

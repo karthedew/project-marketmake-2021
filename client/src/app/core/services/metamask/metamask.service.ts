@@ -14,12 +14,19 @@ export class MetamaskService {
 
   ethereum = (window as any).ethereum;
 
+  // --- METAMASK ACCOUNT INFORMATION ---
+  private accountAddress: BehaviorSubject<string> = new BehaviorSubject<string>('yourvalue');
+
+  public readonly address: Observable<string> = this.accountAddress.asObservable();
+
   // --- BEHAVIOR SUBJECTS ---
   private userLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isLoggedIn = this.userLoggedIn.asObservable();
 
   // --- OBSERVABLES ---
-  constructor() { }
+  constructor() {
+    this.getAccountAddress();
+  }
 
   public checkLoggedIn() {
     // if( (window as any).ethereum.isConnected() ) {
@@ -45,6 +52,16 @@ export class MetamaskService {
      */
   public updateLoggedIn(loggedin: boolean) {
     this.userLoggedIn.next(loggedin);
+  }
+
+  /**
+   * Get Account Number
+   */
+  public getAccountAddress(): void {
+    this.ethereum.request({ method: 'eth_requestAccounts' })
+      .then(address => {
+        this.accountAddress.next(address[0])
+      })
   }
   
 }
