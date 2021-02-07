@@ -18,7 +18,7 @@ contract Lend {
         uint savedInterest;
         uint index;
     }
-    mapping(address => UserStruct) userStructs;
+    mapping(address => UserStruct) public userStructs;
     address payable giveAddress;
 
     event Deposit(uint _totalDeposit, uint _interest);
@@ -35,6 +35,10 @@ contract Lend {
     IWETHGateway gateway = IWETHGateway(0xDcD33426BA191383f1c9B431A342498fdac73488);
     IAToken aWETH = IAToken(0x030bA81f1c18d280636F32af80b9AAd02Cf0854e);
     IERC20 WETH = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
+
+    // --- FOR KOVAN ---
+    // IWETHGateway gateway = IWETHGateway(0xf8aC10E65F2073460aAD5f28E1EABE807DC287CF);
+    // IAToken aWETH = IAToken(0xB597cd8D3217ea6477232F9217fa70837ff667Af); // aToken Address?
 
     constructor(address payable _giveAddress) {
         admin = msg.sender;

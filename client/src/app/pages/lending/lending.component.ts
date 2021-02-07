@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LendingContract } from 'app/core/services/contracts/lending/lending-contract.injectable';
 import { LendingContractService } from 'app/core/services/contracts/lending/lending-contract.service';
 
 @Component({
@@ -17,9 +18,17 @@ export class LendingComponent implements OnInit {
   cyrptoList: string[] = ['Ether', 'Link'];
 
   constructor(
-    private lendingContract: LendingContractService,
+    private lendingContractService: LendingContractService,
+    private lendingContract: LendingContract,
     private formBuilder: FormBuilder
-  ) { }
+  ) {
+    // --- Watch Events on Contract ---
+    this.lendingContract.on("Deposit", (_totalDeposit, _interest) => {
+      console.log('You made it!')
+      console.log('Total Deposited: ', _totalDeposit)
+      console.log('Total Interest: ', _interest)
+    })
+  }
 
   ngOnInit(): void {
 
@@ -45,6 +54,13 @@ export class LendingComponent implements OnInit {
       ]]
     })
 
+    // --- Watch Events on Contract ---
+    this.lendingContract.on("Deposit", (_totalDeposit, _interest) => {
+      console.log('You made it!')
+      console.log('Total Deposited: ', _totalDeposit)
+      console.log('Total Interest: ', _interest)
+    })
+
     // this.lendingContract.deposit('50', '0.1')
     //   .then(comeback => {
     //     this.comeback = comeback;
@@ -53,15 +69,19 @@ export class LendingComponent implements OnInit {
 
   deposit() {
     // Get all the values from the Form
-    let crypto  = this.lendingForm.controls['token'].value;
+    // let crypto  = this.lendingForm.controls['token'].value;
     let percent = this.lendingForm.controls['percent'].value;
     let amount  = this.lendingForm.controls['amount'].value;
 
-    alert(`The values you selected are: ${crypto}, ${percent}, ${amount}`)
-
 
     // Call the Lending Contract Deposit function.
-    this.lendingContract.deposit(percent, amount);
+    this.lendingContractService.deposit(percent, amount);
+
+    // // --- Watch Events on Contract ---
+    // this.lendingContract.on('Deposit', (_totalDeposit, _interest) => {
+    //   console.log('Total Deposited: ', _totalDeposit)
+    //   console.log('Total Interest: ', _interest)
+    // })
 
   }
 

@@ -11,6 +11,13 @@ export class LendingContractService {
     private lendingContract: LendingContract
   ) {
     let account = this.getAccount();
+
+    // --- Watch Events on Contract ---
+    this.lendingContract.on("Deposit", (_totalDeposit, _interest) => {
+      console.log('You made it!')
+      console.log('Total Deposited: ', _totalDeposit)
+      console.log('Total Interest: ', _interest)
+    })
   }
 
   async getAccount() {
@@ -20,47 +27,30 @@ export class LendingContractService {
   }
 
   async deposit(percent: string, amount: string) {
-
-    // this.lendingContract.signer.getAddress().then(address => {
-    // })
-    // this.lendingContract.signer.getGasPrice().then(gas => {
-    // })
-    let tx = {
-      value: ethers.utils.parseEther(amount)
-    }
-
-    // this.lendingContract.estimateGas.deposit(percent, {
-    //   value: ethers.utils.parseEther(amount)
-    // })
-
-    console.log('This is the Lending Contract on Kovan: ', this.lendingContract.address)
-    this.lendingContract.signer.getGasPrice()
-      .then(gas => console.log('The gas price: ', gas))
-
-    let Gwei_price = '0.000000229';
-    let Gwei_limit = '0.00000000000071';
-    
-    let transaction = this.lendingContract.deposit(percent, {
+    this.lendingContract.deposit(percent, {
       value: ethers.utils.parseEther(amount),
-      gasPrice: ethers.utils.parseEther(Gwei_price),
-      gasLimit: ethers.utils.parseEther(Gwei_limit)
-    })
+      gasLimit: ethers.utils.parseEther('0.0000000000095')
+    }).catch(err => console.error(err))
+  }
 
-    // transaction.then(rest => {
-    //   console.log(rest)
+
+  async getContractData() {
+    console.log("THis is the User Struct: ", this.lendingContract);
+
+    console.log('This is the address: ', this.lendingContract.address);
+
+    let address = this.getAccount();
+
+    this.lendingContract.getuser(address)
+      .then(result => console.log('The getUser is: ', result))
+      .catch(err => console.log(err))
+
+    // this.lendingContract.balanceOf('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+    //   .then(result => console.log("The balance of is: ", result))
+    //   .catch(err => console.log(err))
+
+    // this.lendingContract.lastATokenBalance.then(result => {
+    //   console.log('This is the user struct: ', result)
     // })
-    // .catch(err => console.error(err))
-
-    // this.lendingContract.sendTransaction({})
-
-    // console.log('Depositing money...')
-    // this.lendingContract.deposit(50, {value: ethers.utils.parseEther("0.5")});
-    // console.log(this.lendingContract)
-    // let account = await this.lendingContract.signer.getAddress();
-    // console.log('Getting the balance of the account contributor...', account)
-    // let tx = await this.lendingContract.balanceOf(account)
-    // console.log('The transaction from the deposit: ', tx.hash);
-
-    return 'success'
   }
 }

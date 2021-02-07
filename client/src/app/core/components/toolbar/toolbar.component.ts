@@ -107,6 +107,7 @@ export class ToolbarComponent implements OnInit {
   private getChainId() {
     this.ethereum.request({ method: 'eth_chainId' })
       .then(chainId => {
+        console.log('This is the chainId: ', chainId)
         let name = this.getProviderName(chainId);
         this.providerName = name;
       })
@@ -133,6 +134,10 @@ export class ToolbarComponent implements OnInit {
 
     if (chainId == '0x2a') {
       return 'Kovan'
+    }
+    
+    if (chainId == '0x539') {
+      return 'LocalHost Rpc'
     }
 
     else {

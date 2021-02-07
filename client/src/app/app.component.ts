@@ -28,39 +28,9 @@ export class AppComponent implements OnInit {
   @ViewChild(SidenavComponent) public sidenavComponent: SidenavComponent
 
   constructor(
-    private contract: TokenContract,
-    private chainLinkContract: ChainLinkContract,
-    private loginService: LoginService,
     private sideNavService: SidenavService,
     @Inject(MetaMaskProvider) metaMaskProvider: providers.Web3Provider
   ) {
-
-    /**
-     * Test ChainLink Contract
-     */
-
-    this.chainLinkContract.name()
-      .then(name => {
-        this.contractName = name;
-      })
-      .catch(err => console.error('The chainlink name did not work', err))
-
-    this.chainLinkContract.getLatestPrice()
-      .then(res => {
-      })
-      .catch(err => {
-        console.log('You got an error trying to call the getLatestPrice', err)
-      })
-
-    /**
-     * This is an example of:
-     *   [1] calling a function from the smart contract using an Angular Injectable token and,
-     *   [2] Making the smart contract accessible through an Angular class.
-     */
-    // this.contractName = this.contract.name();
-
-    // See method below for description.
-    // this.getContractName();
 
   }
 
