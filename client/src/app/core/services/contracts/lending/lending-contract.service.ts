@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import { ethers, providers } from 'ethers';
+import { ethers, providers, Transaction } from 'ethers';
 import { LendingContract } from './lending-contract.injectable';
-import { U256, UInt256 } from "uint256";
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +19,37 @@ export class LendingContractService {
     return accounts[0]
   }
 
-  async deposit() {
+  async deposit(percent: string, amount: string) {
 
-    this.lendingContract.signer.getAddress().then(address => {
-    })
-    this.lendingContract.signer.getGasPrice().then(gas => {
+    // this.lendingContract.signer.getAddress().then(address => {
+    // })
+    // this.lendingContract.signer.getGasPrice().then(gas => {
+    // })
+    let tx = {
+      value: ethers.utils.parseEther(amount)
+    }
+
+    // this.lendingContract.estimateGas.deposit(percent, {
+    //   value: ethers.utils.parseEther(amount)
+    // })
+
+    console.log('This is the Lending Contract on Kovan: ', this.lendingContract.address)
+    this.lendingContract.signer.getGasPrice()
+      .then(gas => console.log('The gas price: ', gas))
+
+    let Gwei_price = '0.000000229';
+    let Gwei_limit = '0.00000000000071';
+    
+    let transaction = this.lendingContract.deposit(percent, {
+      value: ethers.utils.parseEther(amount),
+      gasPrice: ethers.utils.parseEther(Gwei_price),
+      gasLimit: ethers.utils.parseEther(Gwei_limit)
     })
 
+    // transaction.then(rest => {
+    //   console.log(rest)
+    // })
+    // .catch(err => console.error(err))
 
     // this.lendingContract.sendTransaction({})
 

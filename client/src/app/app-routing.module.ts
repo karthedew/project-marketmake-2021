@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AaveComponent } from './pages/aave/aave.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LendingComponent } from './pages/lending/lending.component';
 
@@ -13,10 +14,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'aave',
-    component: AaveComponent,
+    path: 'dashboard',
+    component: DashboardComponent,
     data: {
-      title: 'Aave Component'
+      title: 'Dashboard Component'
     }
   },
   {

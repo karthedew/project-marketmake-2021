@@ -14,7 +14,7 @@ export class LendingComponent implements OnInit {
 
   // --- Form Information ---
   lendingForm: FormGroup;
-  cyrptoList: string[] = ['Ether', 'Link', 'Aave'];
+  cyrptoList: string[] = ['Ether', 'Link'];
 
   constructor(
     private lendingContract: LendingContractService,
@@ -45,10 +45,10 @@ export class LendingComponent implements OnInit {
       ]]
     })
 
-    this.lendingContract.deposit()
-      .then(comeback => {
-        this.comeback = comeback;
-      })
+    // this.lendingContract.deposit('50', '0.1')
+    //   .then(comeback => {
+    //     this.comeback = comeback;
+    //   })
   }
 
   deposit() {
@@ -61,7 +61,7 @@ export class LendingComponent implements OnInit {
 
 
     // Call the Lending Contract Deposit function.
-    this.lendingContract.deposit();
+    this.lendingContract.deposit(percent, amount);
 
   }
 

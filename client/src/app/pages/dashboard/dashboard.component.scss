@@ -1,0 +1,29 @@
+.dashboard-setup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .title-mat-card {
+        width: 90%;
+        margin: 15px;
+    }
+
+    .account-mat-card {
+        width: 90%;
+        margin: 15px;
+        background-color: rgb(56, 125, 255);
+    }
+
+    .lending-mat-card {
+        width: 90%;
+        margin: 15px;
+        background-color: rgb(149, 56, 255);
+    }
+ 
+}
+
+.display-info {
+    border: "4px solid black";
+    // border-radius: 25px;
+}
