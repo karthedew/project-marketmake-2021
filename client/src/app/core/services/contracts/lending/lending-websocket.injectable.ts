@@ -4,7 +4,7 @@ import { Contract, ethers, providers } from 'ethers';
 
 // // --- THE CONTRACT DATA ---
 import * as ContractJson from '../../../../../contracts/Lend.json';
-import { MetaMaskProvider, RpcProvider } from '../../ethers/ethers.injectable';
+import { WebSocketProvider } from '../../ethers/ethers.injectable';
 
 
 /**
@@ -13,16 +13,16 @@ import { MetaMaskProvider, RpcProvider } from '../../ethers/ethers.injectable';
  * 
  */
 @Injectable({ providedIn: 'root' })
-export class LendingContract extends Contract {
+export class LendingWebSocketContract extends Contract {
 
     constructor(
-        @Inject(MetaMaskProvider) rpcProvider: providers.Web3Provider
+        @Inject(WebSocketProvider) socketProvider: providers.WebSocketProvider
     ) {
         // --- Contract Address ---
         let lendingAddress = "0xF55BbBb34484D17aC730d91B97D97CACC42F4C9b";
 
         // --- METAMASK Signer ---
-        let signer = rpcProvider.getSigner()
+        let signer = socketProvider.getSigner()
 
         // --- Ethers Contract Class Intialized Parameters ---
         super(lendingAddress, ContractJson.abi, signer);
