@@ -18,7 +18,7 @@ contract Lend {
         uint savedInterest;
         uint index;
     }
-    mapping(address => UserStruct) userStructs;
+    mapping(address => UserStruct) public userStructs;
     address payable giveAddress;
 
     event Deposit(uint _totalDeposit, uint _interest);
@@ -32,13 +32,18 @@ contract Lend {
     receive() external payable {}
 
     // For MAINNET + LOCAL, needs updating for KOVAN
-    IWETHGateway gateway = IWETHGateway(0xDcD33426BA191383f1c9B431A342498fdac73488);
-    IAToken aWETH = IAToken(0x030bA81f1c18d280636F32af80b9AAd02Cf0854e);
-    IERC20 WETH = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
+    // IWETHGateway gateway = IWETHGateway(0xDcD33426BA191383f1c9B431A342498fdac73488);
+    // IAToken aWETH = IAToken(0x030bA81f1c18d280636F32af80b9AAd02Cf0854e);
+    // IERC20 WETH = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
+
+    // --- KOVAN --
+    IWETHGateway gateway = IWETHGateway(0xf8aC10E65F2073460aAD5f28E1EABE807DC287CF);
+    IAToken aWETH = IAToken(0x87b1f4cf9BD63f7BBD3eE1aD04E8F52540349347);
 
     constructor(address payable _giveAddress) {
         admin = msg.sender;
         giveAddress = _giveAddress;
+        userIndex.push(address(this));
     }
 
     // Handles deposits, updates user struct and calls depositAave
@@ -59,7 +64,11 @@ contract Lend {
 
     // Check if a user exists
     function checkUserExistence(address _userAddress) public view returns(bool) {
+
         uint _index = userStructs[_userAddress].index;
+        if (_index == 0) {
+            return false;
+        }
         address _indexed_address = userIndex[_index];
         if (_userAddress == _indexed_address) {
             return true;
@@ -79,7 +88,12 @@ contract Lend {
     // Scales up aToken balances for all users to account for accrued interest
     function scaleBalances() private {
         uint _aTokenBalance = aWETH.balanceOf(address(this));
-        uint scalingFactor = (_aTokenBalance * 100)/lastATokenBalance;
+        uint scalingFactor = 100;
+
+        if (lastATokenBalance != 0 ) {
+            scalingFactor = (_aTokenBalance * 100)/lastATokenBalance;
+        }
+
         for (uint i=0; i < userIndex.length; i++) {
             userStructs[userIndex[0]].aTokenBalance = userStructs[userIndex[0]].aTokenBalance * (scalingFactor/100);
         }

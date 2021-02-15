@@ -10,6 +10,7 @@ module.exports = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
+      chainId: 1337,
       forking: {
         url: process.env.ALCHEMY_MAINNET_RPC_URL
       }

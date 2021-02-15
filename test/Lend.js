@@ -16,7 +16,7 @@ describe("Lend contract", function () {
     beforeEach(async function () {
         Lend = await ethers.getContractFactory("Lend");
         [owner, addr1, addr2] = await ethers.getSigners();
-        lendToken = await Lend.deploy();
+        lendToken = await Lend.deploy("0x8f951903c9360345b4e1b536c7f5ae8f88a64e79");
         aWETH = await ethers.getContractAt("IERC20", aWETHAddress);
         aTWETH = await ethers.getContractAt("IAToken", aWETHAddress);
     });

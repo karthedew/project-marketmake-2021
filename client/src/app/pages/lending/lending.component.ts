@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ethers } from "ethers";
+import { LendingContract } from 'app/core/services/contracts/lending/lending-contract.injectable';
+import { LendingWebSocketContract } from 'app/core/services/contracts/lending/lending-websocket.injectable';
 import { LendingContractService } from 'app/core/services/contracts/lending/lending-contract.service';
 
 @Component({
@@ -17,7 +20,9 @@ export class LendingComponent implements OnInit {
   cyrptoList: string[] = ['Ether', 'Link'];
 
   constructor(
-    private lendingContract: LendingContractService,
+    private lendingContractService: LendingContractService,
+    private lendingContract: LendingContract,
+    private lendingSocketProvider: LendingWebSocketContract,
     private formBuilder: FormBuilder
   ) { }
 
@@ -32,8 +37,8 @@ export class LendingComponent implements OnInit {
     this.lendingForm = this.formBuilder.group({
       amount: ['', [
         Validators.required,
-        Validators.min(0.1),
-        Validators.max(100)
+        Validators.min(0),
+        Validators.max(1000)
       ]],
       percent: ['50',[
         Validators.required,
@@ -45,10 +50,10 @@ export class LendingComponent implements OnInit {
       ]]
     })
 
-    // this.lendingContract.deposit('50', '0.1')
-    //   .then(comeback => {
-    //     this.comeback = comeback;
-    //   })
+
+    this.lendingSocketProvider.on("Deposit", (_totalDeposit, _interest) => {
+      alert(`Your ETH submission has been confirmed for ${_totalDeposit.toString()} at a donation rate ${_interest.toString()}`)
+    })
   }
 
   deposit() {
@@ -57,11 +62,8 @@ export class LendingComponent implements OnInit {
     let percent = this.lendingForm.controls['percent'].value;
     let amount  = this.lendingForm.controls['amount'].value;
 
-    alert(`The values you selected are: ${crypto}, ${percent}, ${amount}`)
-
-
     // Call the Lending Contract Deposit function.
-    this.lendingContract.deposit(percent, amount);
+    this.lendingContractService.deposit(percent, amount);
 
   }
 

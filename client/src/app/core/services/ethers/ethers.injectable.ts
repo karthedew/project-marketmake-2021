@@ -11,6 +11,15 @@ const RpcProvider = new InjectionToken<providers.JsonRpcProvider>('HardHat Ether
     factory: () => new providers.JsonRpcProvider('http://localhost:8545')
 })
 
+
+/**
+ * This connects to the Localhost Provider
+ */
+const WebSocketProvider = new InjectionToken<providers.WebSocketProvider>('HardHat Ethereum RPC Provider', {
+    providedIn: 'root',
+    factory: () => new providers.WebSocketProvider('wss://kovan.infura.io/ws/v3/4133d31370e042c1883b30ef86dfd251')
+})
+
 /**
  * This connects to the current MetaMask provider
  */
@@ -38,4 +47,4 @@ const WEB3 = new InjectionToken<Web3>('web3', {
     }
 });
 
- export { MetaMaskProvider, WEB3, RpcProvider }
+ export { MetaMaskProvider, WEB3, RpcProvider, WebSocketProvider }

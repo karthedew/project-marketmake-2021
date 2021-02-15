@@ -6,7 +6,7 @@ import { LoginService } from "./core/services/web3/web3-login.service";
 import { ChainLinkContract } from "./core/services/contracts/chainlinkContract.service";
 import { SidenavService } from "./core/services/sidenav/sidenav.service";
 
-import * as PriceConsumerJson from '../contracts/PriceConsumerV3.sol/PriceConsumerV3.json';
+import * as PriceConsumerJson from '../contracts/PriceConsumerV3.json';
 import { SidenavComponent } from './core/components/sidenav/sidenav.component';
 
 
@@ -33,36 +33,7 @@ export class AppComponent implements OnInit {
     private loginService: LoginService,
     private sideNavService: SidenavService,
     @Inject(MetaMaskProvider) metaMaskProvider: providers.Web3Provider
-  ) {
-
-    /**
-     * Test ChainLink Contract
-     */
-
-    this.chainLinkContract.name()
-      .then(name => {
-        this.contractName = name;
-      })
-      .catch(err => console.error('The chainlink name did not work', err))
-
-    this.chainLinkContract.getLatestPrice()
-      .then(res => {
-      })
-      .catch(err => {
-        console.log('You got an error trying to call the getLatestPrice', err)
-      })
-
-    /**
-     * This is an example of:
-     *   [1] calling a function from the smart contract using an Angular Injectable token and,
-     *   [2] Making the smart contract accessible through an Angular class.
-     */
-    // this.contractName = this.contract.name();
-
-    // See method below for description.
-    // this.getContractName();
-
-  }
+  ) { }
 
   ngOnInit(): void {
     

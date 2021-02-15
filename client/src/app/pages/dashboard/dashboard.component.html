@@ -26,8 +26,28 @@
         <mat-card-title>
             Lending Information
         </mat-card-title>
+        <hr>
         <mat-card-content>
-            Total Lending for TAD
+            <div>
+                <h5>Total Deposited to Contract</h5>
+                <p style="font-size: larger; color: black;">{{ totalDeposited }}</p>
+            </div>
+            <hr>
+            <div>
+                <h5>aToken Balance</h5>
+                <p style="font-size: larger; color: black;"> {{ aTokenBalance }}</p>
+            </div>
+            <hr>
+            <div>
+                <h5>Your Selected Donation Percent</h5>
+                <p style="font-size: larger; color: black;"> {{ givePercent }}</p>
+            </div>
+            <hr>
+            <div>
+                <h5>Your Saved Interest</h5>
+                <p style="font-size: larger; color: black;"> {{ savedInterest }}</p>
+            </div>
+            
         </mat-card-content>
     </mat-card>
 
